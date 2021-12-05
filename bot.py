@@ -50,8 +50,7 @@ async def start(bot: Client, cmd: Message):
                         InlineKeyboardButton("Bots Channel", url="https://telegram.me/OmegaBots")
                     ],
                     [
-                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
-                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot")
                     ]
                 ]
             )
