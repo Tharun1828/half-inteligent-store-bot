@@ -47,7 +47,7 @@ async def start(bot: Client, cmd: Message):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Bots Channel", url="https://t.me/OmegaBots")
+                        InlineKeyboardButton("Bots Channel", url="https://telegram.me/OmegaBots")
                     ],
                     [
                         InlineKeyboardButton("About Bot", callback_data="aboutbot"),
@@ -87,7 +87,7 @@ async def main(bot: Client, message: Message):
                 return
 
         if message.from_user.id in Config.BANNED_USERS:
-            await message.reply_text("Sorry, You are banned!\n\nContact [Support Group](https://t.me/OmegaBots)",
+            await message.reply_text("Sorry, You are banned!\n\nContact [Support Group](https://telegram.me/OmegaBots)",
                                      disable_web_page_preview=True)
             return
 
@@ -96,7 +96,7 @@ async def main(bot: Client, message: Message):
         await message.reply_text(
             text="**Choose an option from below:**",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Save in Multi File List", callback_data="addToBatchTrue")],
+                [InlineKeyboardButton("Add To Multi File List", callback_data="addToBatchTrue")],
                 [InlineKeyboardButton("Get Sharable Link", callback_data="addToBatchFalse")]
             ]),
             quote=True,
@@ -114,17 +114,17 @@ async def main(bot: Client, message: Message):
         try:
             forwarded_msg = await message.forward(Config.DB_CHANNEL)
             file_er_id = str(forwarded_msg.message_id)
-            share_link = f"https://t.me/{Config.BOT_USERNAME}?start=OmegaBots_{str_to_b64(file_er_id)}"
+            share_link = f"https://telegram.me/{Config.BOT_USERNAME}?start=OmegaBots_{str_to_b64(file_er_id)}"
             CH_edit = await bot.edit_message_reply_markup(message.chat.id, message.message_id,
                                                           reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(
                                                               "Get Sharable Link", url=share_link)]]))
             if message.chat.username:
                 await forwarded_msg.reply_text(
-                    f"#CHANNEL_BUTTON:\n\n[{message.chat.title}](https://t.me/{message.chat.username}/{CH_edit.message_id}) Channel's Broadcasted File's Button Added!")
+                    f"#CHANNEL_BUTTON:\n\n[{message.chat.title}](https://telegram.me/{message.chat.username}/{CH_edit.message_id}) Channel's Broadcasted File's Button Added!")
             else:
                 private_ch = str(message.chat.id)[4:]
                 await forwarded_msg.reply_text(
-                    f"#CHANNEL_BUTTON:\n\n[{message.chat.title}](https://t.me/c/{private_ch}/{CH_edit.message_id}) Channel's Broadcasted File's Button Added!")
+                    f"#CHANNEL_BUTTON:\n\n[{message.chat.title}](https://telegram.me/c/{private_ch}/{CH_edit.message_id}) Channel's Broadcasted File's Button Added!")
         except FloodWait as sl:
             await asyncio.sleep(sl.x)
             await bot.send_message(
@@ -265,7 +265,7 @@ async def _banned_users(_, m: Message):
 @Bot.on_message(filters.private & filters.command("clear_batch"))
 async def clear_user_batch(bot: Client, m: Message):
     MediaList[f"{str(m.from_user.id)}"] = []
-    await m.reply_text("Cleared your batch files successfully!")
+    await m.reply_text("Cleared your list files files successfully!")
 
 
 @Bot.on_callback_query()
@@ -280,8 +280,7 @@ async def button(bot: Client, cmd: CallbackQuery):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Go Home", callback_data="gotohome"),
-                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                        InlineKeyboardButton("Go Home", callback_data="gotohome")
                     ]
                 ]
             )
@@ -311,11 +310,10 @@ async def button(bot: Client, cmd: CallbackQuery):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Bots Channel", url="https://t.me/OmegaBots")
+                        InlineKeyboardButton("Bots Channel", url="https://telegram.me/OmegaBots")
                     ],
                     [
-                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
-                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot")
                     ]
                 ]
             )
@@ -327,7 +325,7 @@ async def button(bot: Client, cmd: CallbackQuery):
                 user = await bot.get_chat_member(int(Config.UPDATES_CHANNEL), cmd.message.chat.id)
                 if user.status == "kicked":
                     await cmd.message.edit(
-                        text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://t.me/OmegaBots).",
+                        text="Sorry Sir, You are Banned to use me. Contact my [Support Group](https://telegram.me/OmegaBots).",
                         parse_mode="markdown",
                         disable_web_page_preview=True
                     )
@@ -352,7 +350,7 @@ async def button(bot: Client, cmd: CallbackQuery):
                 return
             except Exception:
                 await cmd.message.edit(
-                    text="Something went Wrong. Contact my [Support Group](https://t.me/OmegaBots).",
+                    text="Something went Wrong. Contact my [Support Group](https://telegram.me/OmegaBots).",
                     parse_mode="markdown",
                     disable_web_page_preview=True
                 )
@@ -364,11 +362,10 @@ async def button(bot: Client, cmd: CallbackQuery):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton("Bots Channel", url="https://t.me/OmegaBots")
+                        InlineKeyboardButton("Bots Channel", url="https://telegram.me/OmegaBots")
                     ],
                     [
-                        InlineKeyboardButton("About Bot", callback_data="aboutbot"),
-                        InlineKeyboardButton("About Dev", callback_data="aboutdevs")
+                        InlineKeyboardButton("About Bot", callback_data="aboutbot")
                     ]
                 ]
             )
@@ -393,10 +390,10 @@ async def button(bot: Client, cmd: CallbackQuery):
             MediaList[f"{str(cmd.from_user.id)}"] = []
         file_id = cmd.message.reply_to_message.message_id
         MediaList[f"{str(cmd.from_user.id)}"].append(file_id)
-        await cmd.message.edit("File Saved in Batch!\n\n"
-                               "Press below button to get batch link.",
+        await cmd.message.edit("This File Is Added To Multi File List!\n\n"
+                               "Press below button to get batch link or just send another file and click add to multi file list.",
                                reply_markup=InlineKeyboardMarkup([
-                                   [InlineKeyboardButton("Get Batch Link", callback_data="getBatchLink")],
+                                   [InlineKeyboardButton("Get Multi Files Link", callback_data="getBatchLink")],
                                    [InlineKeyboardButton("Close Message", callback_data="closeMessage")]
                                ]))
 
@@ -408,7 +405,7 @@ async def button(bot: Client, cmd: CallbackQuery):
         if message_ids is None:
             await cmd.answer("Batch List Empty!", show_alert=True)
             return
-        await cmd.message.edit("Please wait, generating batch link ...")
+        await cmd.message.edit("Please wait, generating multi file link...")
         await SaveBatchMediaInChannel(bot=bot, editable=cmd.message, message_ids=message_ids)
         MediaList[f"{str(cmd.from_user.id)}"] = []
 
