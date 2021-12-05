@@ -24,7 +24,7 @@ _Send me any file I will save it in my Database. Also works for channel. Add me 
 
 🤖 **My Name:** [Files Store Bot](https://t.me/{BOT_USERNAME})
 
-📢 **Updates Channel:** [Discovery Projects](https://telegram.me/OmegaBots)
+📢 **Updates Channel:** [OmegaBots](https://telegram.me/OmegaBots)
 """
 	
 	HOME_TEXT = """
