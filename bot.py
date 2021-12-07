@@ -72,7 +72,7 @@ async def start(bot: Client, cmd: Message):
                 media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
                 del_msg.append(media)
             await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
-            await asyncio.sleep(1800)
+            await asyncio.sleep(600)
             await bot.delete_messages(cmd.from_user.id, del_msg)
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
