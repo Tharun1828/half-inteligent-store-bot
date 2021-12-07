@@ -63,12 +63,16 @@ async def start(bot: Client, cmd: Message):
                 file_id = int(usr_cmd.split("_")[-1])
             GetMessage = await bot.get_messages(chat_id=Config.DB_CHANNEL, message_ids=file_id)
             message_ids = []
+            del_msg = []
             if GetMessage.text:
                 message_ids = GetMessage.text.split(" ")
             else:
                 message_ids.append(int(GetMessage.message_id))
             for i in range(len(message_ids)):
-                await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+                media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+                del_msg.append(media)
+            await asyncio.sleep(300)
+            await bot.delete_messages(cmd.from_user.id, del_msg)
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
