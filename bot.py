@@ -16,9 +16,20 @@ from handlers.check_user_status import handle_user_status
 from handlers.force_sub_handler import handle_force_sub
 from handlers.broadcast_handlers import main_broadcast_handler
 from handlers.save_media import SaveMediaInChannel, SaveBatchMediaInChannel
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
 
 MediaList = {}
 Bot = Client(Config.BOT_USERNAME, bot_token=Config.BOT_TOKEN, api_id=Config.API_ID, api_hash=Config.API_HASH)
+
+
+async def job(thechatid, themsgid, delid):
+    print("good bye")
+    await Bot.delete_messages(thechatid, themsgid)
+    scheduler.remove_job(str(delid))
+    print(delid)
+    print("good bye really?")
+    return
 
 
 @Bot.on_message(filters.private)
@@ -70,10 +81,10 @@ async def start(bot: Client, cmd: Message):
                 message_ids.append(int(GetMessage.message_id))
             for i in range(len(message_ids)):
                 media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
-                # del_msg.append(media)
-            # await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
-            # await asyncio.sleep(600)
-            # await bot.delete_messages(cmd.from_user.id, del_msg)
+                del_msg.append(media)
+            await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
+            scheduler.add_job(job, "interval", seconds=1800, id=str(cmd.message_id), args=[cmd.from_user.id, del_msg, cmd.message_id])
+            print("done", cmd.message_id)
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
@@ -421,4 +432,7 @@ async def button(bot: Client, cmd: CallbackQuery):
     except QueryIdInvalid:
         pass
 
+
+scheduler = AsyncIOScheduler()
+scheduler.start()
 Bot.run()
