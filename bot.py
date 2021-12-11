@@ -24,11 +24,8 @@ Bot = Client(Config.BOT_USERNAME, bot_token=Config.BOT_TOKEN, api_id=Config.API_
 
 
 async def job(thechatid, themsgid, delid):
-    print("good bye")
     await Bot.delete_messages(thechatid, themsgid)
     scheduler.remove_job(str(delid))
-    print(delid)
-    print("good bye really?")
     return
 
 
@@ -84,7 +81,6 @@ async def start(bot: Client, cmd: Message):
                 del_msg.append(media)
             await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
             scheduler.add_job(job, "interval", seconds=1800, id=str(cmd.message_id), args=[cmd.from_user.id, del_msg, cmd.message_id])
-            print("done", cmd.message_id)
         except Exception as err:
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
