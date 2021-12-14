@@ -77,7 +77,11 @@ async def start(bot: Client, cmd: Message):
             else:
                 message_ids.append(int(GetMessage.message_id))
             for i in range(len(message_ids)):
-                media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+                try:
+                    media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
+                except:
+                    media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(GetMessage.message_id))
+#                 media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
                 del_msg.append(media)
             await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
             scheduler.add_job(job, "interval", seconds=1800, id=str(cmd.message_id), args=[cmd.from_user.id, del_msg, cmd.message_id])
@@ -85,7 +89,7 @@ async def start(bot: Client, cmd: Message):
             await cmd.reply_text(f"Something went wrong!\n\n**Error:** `{err}`")
 
 
-@Bot.on_message((filters.document | filters.video | filters.audio) & ~filters.edited & ~filters.chat(Config.DB_CHANNEL))
+@Bot.on_message((filters.document | filters.video | filters.audio | filters.photo | filters.text) & ~filters.edited & ~filters.chat(Config.DB_CHANNEL))
 async def main(bot: Client, message: Message):
 
     if message.chat.type == "private":
