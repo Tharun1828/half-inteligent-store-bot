@@ -72,6 +72,7 @@ async def start(bot: Client, cmd: Message):
             GetMessage = await bot.get_messages(chat_id=Config.DB_CHANNEL, message_ids=file_id)
             message_ids = []
             del_msg = []
+            x = 0
             if GetMessage.text:
                 message_ids = GetMessage.text.split(" ")
             else:
@@ -80,7 +81,11 @@ async def start(bot: Client, cmd: Message):
                 try:
                     media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
                 except:
-                    media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(GetMessage.message_id))
+                    if x == 0:
+                        media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(GetMessage.message_id))
+                        x+=1
+                    else:
+                        break
 #                 media = await SendMediaAndReply(bot, user_id=cmd.from_user.id, file_id=int(message_ids[i]))
                 del_msg.append(media)
             await cmd.reply_text("**⏰Files Will Auto Delete In 30Mins...**\n↗️__Forward It Anywhere Or Save It Privetly Before Downloading...__")
