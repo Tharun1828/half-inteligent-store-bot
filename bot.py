@@ -163,12 +163,12 @@ async def main(bot: Client, message: Message):
             )
 
 
-@Bot.on_message(filters.private & filters.command("broadcast") & filters.user(Config.BOT_OWNER) & filters.reply)
+@Bot.on_message(filters.private & filters.command("broadcast") & filters.user([Config.BOT_OWNER]) & filters.reply)
 async def broadcast_handler_open(_, m: Message):
     await main_broadcast_handler(m, db)
 
 
-@Bot.on_message(filters.private & filters.command("status") & filters.user([1321137324,479160455]))
+@Bot.on_message(filters.private & filters.command("status") & filters.user([Config.BOT_OWNER]))
 async def sts(_, m: Message):
     total_users = await db.total_users_count()
     await m.reply_text(text=f"**Total Users in DB:** `{total_users}`", parse_mode="Markdown", quote=True)
